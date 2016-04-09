@@ -1,0 +1,54 @@
+{
+	"id": "f06657e7-3165-ef95-bd9c-62f19db83048",
+	"name": "MetroPublisher",
+	"description": "",
+	"order": [
+		"c52a4bc5-a2e4-6ad0-f230-4e02537d232c"
+	],
+	"folders": [],
+	"timestamp": 1460176292273,
+	"owner": 0,
+	"remoteLink": "",
+	"public": false,
+	"requests": [
+		{
+			"id": "c52a4bc5-a2e4-6ad0-f230-4e02537d232c",
+			"headers": "",
+			"url": "https://go.metropublisher.com/oauth/token",
+			"pathVariables": {},
+			"preRequestScript": null,
+			"method": "POST",
+			"collectionId": "f06657e7-3165-ef95-bd9c-62f19db83048",
+			"data": [
+				{
+					"key": "grant_type",
+					"value": "client_credentials",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "api_key",
+					"value": "",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "api_secret",
+					"value": "",
+					"type": "text",
+					"enabled": true
+				}
+			],
+			"dataMode": "urlencoded",
+			"name": "https://go.metropublisher.com/oauth/token",
+			"description": "Generates an authorization token",
+			"descriptionFormat": "html",
+			"time": 1460176343576,
+			"version": 2,
+			"responses": [],
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {}
+		}
+	]
+}
