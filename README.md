@@ -46,7 +46,7 @@ If any rows in your CSV file are missing a UUID (i.e. a Universally Unique Ident
 `add-uuid-to-csv.php` script.
 
 For example, if you wish to take the contents of `src.csv`, add a UUID to each row, and then save the results to
-`dest.csv` you may do so in the following manner:
+`dest.csv` you may do so using the following command:
 
 ```
 php add-uuid-to-csv.php src.csv dest.csv
