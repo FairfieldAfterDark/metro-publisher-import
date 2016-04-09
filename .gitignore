@@ -15,4 +15,5 @@ gen
 # Metro Publisher Import Project ignores
 settings.php
 *.csv
+composer.phar
 
