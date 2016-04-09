@@ -5,5 +5,4 @@
 define('APP_INSTANCE', 1);
 define('API_KEY', '');
 define('API_SECRET', '');
-define('IMPORT_FILE', '');
 

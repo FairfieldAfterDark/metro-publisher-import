@@ -1,12 +1,18 @@
 {
-    "name": "widgetsburritos/metro-publisher-import",
-    "description": "Imports listings from CSV file into MetroPublisher.",
-    "require": {
-    },
-    "authors": [
-        {
-            "name": "David Stinemetze",
-            "email": "davidstinemetze@gmail.com"
-        }
-    ]
+  "name": "widgetsburritos/metro-publisher-import",
+  "description": "Imports listings from CSV file into MetroPublisher.",
+  "require": {
+    "ramsey/uuid": "^3.3"
+  },
+  "authors": [
+    {
+      "name": "David Stinemetze",
+      "email": "davidstinemetze@gmail.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "WidgetsBurritos\\": "src/"
+    }
+  }
 }

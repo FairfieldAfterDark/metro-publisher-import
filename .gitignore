@@ -9,12 +9,10 @@ gen
 
 # Created by .ignore support plugin (hsz.mobi)
 
+# Composer
+/vendor/
 
-
-
-
-# Custom Project ignores
+# Metro Publisher Import Project ignores
 settings.php
 *.csv
 
-/vendor/

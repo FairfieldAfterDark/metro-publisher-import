@@ -1,8 +1,12 @@
 <?php
 namespace WidgetsBurritos;
 
+/**
+ * Class MetroPublisher
+ * @package WidgetsBurritos
+ */
 class MetroPublisher {
-  private $myInstance, $myApiKey, $myApiSecret, $myAuthToken;
+  private $myApiKey, $myApiSecret, $myAuthToken, $myURLBase;
 
   /**
    * MetroPublisher constructor.
@@ -11,8 +15,7 @@ class MetroPublisher {
    * @param $api_key
    * @param $api_secret
    */
-  function __construct($instance, $api_key, $api_secret) {
-    $this->myInstance = $instance;
+  function __construct($api_key, $api_secret) {
     $this->myApiKey = $api_key;
     $this->myApiSecret = $api_secret;
     $this->__setAuthorizationToken();
@@ -56,7 +59,7 @@ class MetroPublisher {
    * @param $uuid
    */
   private function __getLocationEndpoint($uuid) {
-    return 'https://api.metropublisher.com/' . $this->myInstance . '/locations/' . $uuid;
+    return $this->myURLBase . '/locations/' . $uuid;
   }
 
 
@@ -95,7 +98,8 @@ class MetroPublisher {
       throw new Exception('CURL Error: '. $err);
     }
     else {
-      $this->myAuthToken = $response;
+      $this->myAuthToken = json_decode($response);
+      $this->myURLBase = $this->myAuthToken->items[0]->url;
     }
   }
 }

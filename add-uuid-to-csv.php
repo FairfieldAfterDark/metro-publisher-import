@@ -3,9 +3,10 @@
  * @file Adds a UUID to any CSV rows missing one.
  */
 
+require __DIR__ . '/vendor/autoload.php';
 
-include_once('functions.php');
-include_once('uuid.php');
+use Ramsey\Uuid\Uuid;
+use WidgetsBurritos\CSVListings;
 
 // Ensure user is on command line.
 if (php_sapi_name() !== 'cli') {
@@ -14,7 +15,7 @@ if (php_sapi_name() !== 'cli') {
 
 // Make sure user is using script correctly.
 if ($argc < 3) {
-  die("Usage `php format-csv.php before.csv after.csv\n");
+  die("Usage `php ".$argv[0]." before.csv after.csv [--force]\n");
 }
 
 // Check input file for existance.
@@ -31,17 +32,18 @@ if (file_exists($after_file) && !$force) {
 }
 
 try {
-  // Attempt to import listings from CSV file, add a UUID to each row if missing, and then export it back out.
-  $csv_rows = importListingsFromCSV($before_file);
+  // Attempt to import listings from CSV file
+  $csv_rows = CSVListings::importFromFile($before_file);
 
+  // If row is missing a UUID, add one.
   foreach ($csv_rows as &$csv_row) {
     if (empty($csv_row['uuid'])) {
-      $csv_row['uuid'] = UUID::v4();
+      $csv_row['uuid'] = Uuid::uuid4();
     }
   }
 
-  exportListingsToCSV($csv_rows, $after_file);
-
+  // Exports listings file.
+  CSVListings::exportToFile($csv_rows, $after_file);
 } catch (Exception $e) {
-  die($e->getMessage());
+  die($e->getMessage()."\n");
 }
