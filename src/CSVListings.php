@@ -14,6 +14,7 @@ class CSVListings {
    * @throws \Exception
    */
   public static function importFromFile($file) {
+    ini_set("auto_detect_line_endings", "1");
     $ct = 0;
     $keys = array();
     $rows = array();
@@ -33,7 +34,7 @@ class CSVListings {
         $row_size = sizeof($row);
 
         // Skip empty rows.
-        if ($row_size < 1 || $row_size == 1 && empty($row[0])) {
+        if ($row_size < 1 || $row_size == 1 && empty($row[0]) || strlen(implode('', $row)) === 0) {
           continue;
         }
         for ($i = 0; $i < sizeof($row); $i++) {

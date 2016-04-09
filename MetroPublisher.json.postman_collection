@@ -4,7 +4,8 @@
 	"description": "",
 	"order": [
 		"c52a4bc5-a2e4-6ad0-f230-4e02537d232c",
-		"af89f0d3-5cf4-eb19-f450-1b0d70cd8d87"
+		"af89f0d3-5cf4-eb19-f450-1b0d70cd8d87",
+		"68103191-0eef-d255-a2a1-210b6178baa7"
 	],
 	"folders": [],
 	"timestamp": 1460176292273,
@@ -13,8 +14,29 @@
 	"public": false,
 	"requests": [
 		{
+			"id": "68103191-0eef-d255-a2a1-210b6178baa7",
+			"headers": "Authorization: Bearer ************\nContent-Type: application/json\n",
+			"url": "https://api.metropublisher.com/402/locations/467d9a15-6fde-459e-b257-10a27e6aaf41",
+			"pathVariables": {},
+			"preRequestScript": null,
+			"method": "PUT",
+			"collectionId": "f06657e7-3165-ef95-bd9c-62f19db83048",
+			"data": [],
+			"dataMode": "raw",
+			"name": "https://api.metropublisher.com/402/locations/467d9a15-6fde-459e-b257-10a27e6aaf41",
+			"description": "Import a location into MetroPublisher",
+			"descriptionFormat": "html",
+			"time": 1460188963236,
+			"version": 2,
+			"responses": [],
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"rawModeData": "{\"content\":\"<p>Import test<\\/p>\\n\",\"description\":\"My description\",\"email\":\"david@sabeacon.com\",\"fax\":\"210-614-8885\",\"geoname_id\":\"4726206\",\"lat\":\"29.616679\",\"long\":\"-98.487349\",\"opening_hours\":\"\",\"pcode\":\"78258\",\"phone\":\"210-614-8884\",\"state\":\"published\",\"street\":\"E. Sonterra Blvd\",\"streetnumber\":\"401\",\"title\":\"Import Test\",\"uuid\":\"467d9a15-6fde-459e-b257-10a27e6aaf41\",\"website\":\"http:\\/\\/www.google.com\",\"urlname\":\"import-test\"}\n"
+		},
+		{
 			"id": "af89f0d3-5cf4-eb19-f450-1b0d70cd8d87",
-			"headers": "Authorization: Bearer AUTHTOKENHERE\n",
+			"headers": "Authorization: Bearer ***************\n",
 			"url": "https://api.metropublisher.com/402/locations/2d70e480-f787-11e5-a025-22000b078648",
 			"pathVariables": {},
 			"preRequestScript": null,
@@ -49,13 +71,13 @@
 				},
 				{
 					"key": "api_key",
-					"value": "",
+					"value": "************",
 					"type": "text",
 					"enabled": true
 				},
 				{
 					"key": "api_secret",
-					"value": "",
+					"value": "************",
 					"type": "text",
 					"enabled": true
 				}
