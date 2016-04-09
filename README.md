@@ -11,15 +11,11 @@ you may need to adapt your instructions accordingly.
 
 1. Clone this respository onto your system using your system terminal:
   ```
-  mkdir -p ~/github/
-  cd ~/github/
-  git clone https://github.com/WidgetsBurritos/metro-publisher-import.git
-  cd metro-publisher-import
+  mkdir -p ~/github/ && cd ~/github/ && git clone https://github.com/WidgetsBurritos/metro-publisher-import.git && cd metro-publisher-import
   ```
 2. Next install and composer to download necessary dependencies:
   ```
-  curl -sS https://getcomposer.org/installer | php
-  php composer.phar install
+  curl -sS https://getcomposer.org/installer | php && php composer.phar install
   ```
 3. Copy `default.settings.php` to `settings.php`
   ```
