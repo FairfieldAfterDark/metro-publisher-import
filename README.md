@@ -43,20 +43,20 @@ php import.php import-file.csv
 ### Populating empty UUID fields
 
 If any rows in your CSV file are missing a UUID (i.e. a Universally Unique Identifier) you can add one using the
-`add-uuid-to-csv.php` script.
+`fix-uuid.php` script.
 
 For example, if you wish to take the contents of `src.csv`, add a UUID to each row, and then save the results to
 `dest.csv` you may do so using the following command:
 
 ```
-php add-uuid-to-csv.php src.csv dest.csv
+php fix-uuid.php src.csv dest.csv
 ```
 
 Note: In order to protect existing files from accidental overwrite, if dest.csv exists, you must use the `--force` flag
 at the tail end of your command:
 
 ```
-php add-uuid-to-csv.php src.csv dest.csv --force
+php fix-uuid.php src.csv dest.csv --force
 ```
 
 Additionally if you want to update the same file you are importing from, just specify that file as both the source and
