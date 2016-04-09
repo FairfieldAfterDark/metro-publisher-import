@@ -62,7 +62,7 @@ php fix-uuid.php src.csv dest.csv --force
 Additionally if you want to update the same file you are importing from, just specify that file as both the source and
 destination files:
 ```
-php add-uuid-to-csv.php src.csv src.csv --force
+php fix-uuid.php src.csv src.csv --force
 ```
 
 
