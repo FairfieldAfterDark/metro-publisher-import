@@ -30,6 +30,12 @@ class CSVListings {
       }
       else {
         $row_hash = array();
+        $row_size = sizeof($row);
+
+        // Skip empty rows.
+        if ($row_size < 1 || $row_size == 1 && empty($row[0])) {
+          continue;
+        }
         for ($i = 0; $i < sizeof($row); $i++) {
           $key = $keys[$i];
           $value = $row[$i];

@@ -3,7 +3,8 @@
 	"name": "MetroPublisher",
 	"description": "",
 	"order": [
-		"c52a4bc5-a2e4-6ad0-f230-4e02537d232c"
+		"c52a4bc5-a2e4-6ad0-f230-4e02537d232c",
+		"af89f0d3-5cf4-eb19-f450-1b0d70cd8d87"
 	],
 	"folders": [],
 	"timestamp": 1460176292273,
@@ -11,6 +12,26 @@
 	"remoteLink": "",
 	"public": false,
 	"requests": [
+		{
+			"id": "af89f0d3-5cf4-eb19-f450-1b0d70cd8d87",
+			"headers": "Authorization: Bearer AUTHTOKENHERE\n",
+			"url": "https://api.metropublisher.com/402/locations/2d70e480-f787-11e5-a025-22000b078648",
+			"pathVariables": {},
+			"preRequestScript": null,
+			"method": "GET",
+			"collectionId": "f06657e7-3165-ef95-bd9c-62f19db83048",
+			"data": null,
+			"dataMode": "params",
+			"name": "https://api.metropublisher.com/402/locations/2d70e480-f787-11e5-a025-22000b078648",
+			"description": "Retrieves a listing by UUID",
+			"descriptionFormat": "html",
+			"time": 1460182563657,
+			"version": 2,
+			"responses": [],
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {}
+		},
 		{
 			"id": "c52a4bc5-a2e4-6ad0-f230-4e02537d232c",
 			"headers": "",

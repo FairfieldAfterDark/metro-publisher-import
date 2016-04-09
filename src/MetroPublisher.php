@@ -25,8 +25,7 @@ class MetroPublisher {
    * @param $listing_array
    */
   function addListing($listing_array) {
-    print '<h3>ADD LISTING ARRAY</h3>';
-    print_r($listing_array);
+
   }
 
 
@@ -62,6 +61,44 @@ class MetroPublisher {
     return $this->myURLBase . '/locations/' . $uuid;
   }
 
+  /**
+   * Retrieves a location by uuid.
+   *
+   * @param $uuid
+   * @return mixed
+   * @throws \Exception
+   */
+  public function getLocation($uuid) {
+    $curl = curl_init();
+
+    curl_setopt_array($curl, array(
+      CURLOPT_URL => sprintf("https://api.metropublisher.com/402/locations/%s", $uuid),
+      CURLOPT_RETURNTRANSFER => TRUE,
+      CURLOPT_ENCODING => "",
+      CURLOPT_MAXREDIRS => 10,
+      CURLOPT_TIMEOUT => 30,
+      CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+      CURLOPT_CUSTOMREQUEST => "GET",
+      CURLOPT_HTTPHEADER => array(
+        sprintf("authorization: Bearer %s", $this->myAuthToken->access_token),
+        "cache-control: no-cache",
+        "postman-token: 52c156c7-ca46-25f3-f810-0150b49f16ae"
+      ),
+    ));
+
+    $response = curl_exec($curl);
+    $err = curl_error($curl);
+
+    curl_close($curl);
+
+    if ($err) {
+      throw new \Exception("cURL error: " . $err);
+    }
+    else {
+      return json_decode($response);
+    }
+  }
+
 
   /**
    * Sets an authorization token.
@@ -95,10 +132,11 @@ class MetroPublisher {
 
     if ($err) {
       $this->myAuthToken = NULL;
-      throw new Exception('CURL Error: '. $err);
+      throw new Exception('cURL error: ' . $err);
     }
     else {
       $this->myAuthToken = json_decode($response);
+      print_r($this->myAuthToken);
       $this->myURLBase = $this->myAuthToken->items[0]->url;
     }
   }

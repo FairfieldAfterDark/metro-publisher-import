@@ -34,7 +34,7 @@ try {
     if (empty($csv_row['uuid'])) {
       throw new \Exception('All rows must have a UUID. Please update the csv using `php add-uuid-to-csv.php` and then run this script again.');
     }
-    print_r($csv_row);
+    $MP->addListing($csv_row);
   }
 } catch (Exception $e) {
   die($e->getMessage()."\n");
