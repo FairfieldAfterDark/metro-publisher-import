@@ -34,7 +34,7 @@ you may need to adapt your instructions accordingly.
 
 ### Importing Listings
 
-If you wish to import data directly from a CSV file into Metro Publisher you can do so using the following script:
+If you wish to import data directly from a CSV file into Metro Publisher you can do so using the following command:
 
 ```
 php import.php import-file.csv
