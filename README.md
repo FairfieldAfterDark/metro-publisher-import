@@ -1,6 +1,6 @@
-# metro-publisher-import
+# Metro Publisher Location Import Script
 
-Simple PHP CLI functionality to import a CSV file of locations into Metro Publisher.
+A simple PHP command-line script to import a CSV file of business locations directly into Metro Publisher.
 
 Note: System has only been used and tested on Mac OS X. If you run any other operating system,
 you may need to adapt your instructions accordingly.
