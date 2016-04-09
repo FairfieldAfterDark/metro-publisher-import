@@ -1,8 +1,8 @@
 <?php
-
+namespace WidgetsBurritos;
 
 class MetroPublisher {
-  private $myInstance, $myApiKey, $myApiSecret;
+  private $myInstance, $myApiKey, $myApiSecret, $myAuthToken;
 
   /**
    * MetroPublisher constructor.
@@ -15,6 +15,7 @@ class MetroPublisher {
     $this->myInstance = $instance;
     $this->myApiKey = $api_key;
     $this->myApiSecret = $api_secret;
+    $this->__setAuthorizationToken();
   }
 
   /**
@@ -54,7 +55,47 @@ class MetroPublisher {
    *
    * @param $uuid
    */
-  private function _getLocationEndpoint($uuid) {
-    return '/'.$this->myInstance.'/locations/'.$uuid;
+  private function __getLocationEndpoint($uuid) {
+    return 'https://api.metropublisher.com/' . $this->myInstance . '/locations/' . $uuid;
+  }
+
+
+  /**
+   * Sets an authorization token.
+   *
+   * @return mixed
+   * @throws \WidgetsBurritos\Exception
+   */
+  private function __setAuthorizationToken() {
+    $curl = curl_init();
+
+    curl_setopt_array($curl, array(
+      CURLOPT_URL => "https://go.metropublisher.com/oauth/token",
+      CURLOPT_RETURNTRANSFER => TRUE,
+      CURLOPT_ENCODING => "",
+      CURLOPT_MAXREDIRS => 10,
+      CURLOPT_TIMEOUT => 30,
+      CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+      CURLOPT_CUSTOMREQUEST => "POST",
+      CURLOPT_POSTFIELDS => sprintf("grant_type=client_credentials&api_key=%s&api_secret=%s", $this->myApiKey, $this->myApiSecret),
+      CURLOPT_HTTPHEADER => array(
+        "cache-control: no-cache",
+        "content-type: application/x-www-form-urlencoded",
+        "postman-token: 5e4b41af-2d23-091c-9e73-89ebb091aa3f"
+      ),
+    ));
+
+    $response = curl_exec($curl);
+    $err = curl_error($curl);
+
+    curl_close($curl);
+
+    if ($err) {
+      $this->myAuthToken = NULL;
+      throw new Exception('CURL Error: '. $err);
+    }
+    else {
+      $this->myAuthToken = $response;
+    }
   }
 }

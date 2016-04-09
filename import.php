@@ -11,7 +11,7 @@ include_once('metro-publisher.php');
 
 print '<PRE>';
 
-$MP = new MetroPublisher(APP_INSTANCE, API_KEY, API_SECRET);
+$MP = new WidgetsBurritos\MetroPublisher(APP_INSTANCE, API_KEY, API_SECRET);
 $csv_rows = importListingsFromCSV(IMPORT_FILE);
 
 // Import each row
