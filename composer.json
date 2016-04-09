@@ -1,0 +1,13 @@
+{
+    "name": "widgetsburritos/metro-publisher-import",
+    "description": "Imports listings from CSV file into MetroPublisher.",
+    "require": {
+        "adoy/oauth2": "^1.3"
+    },
+    "authors": [
+        {
+            "name": "David Stinemetze",
+            "email": "davidstinemetze@gmail.com"
+        }
+    ]
+}
