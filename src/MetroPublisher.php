@@ -39,6 +39,9 @@ class MetroPublisher {
         if (isset($tag_hash[$tag])) {
           $tag_uuids[] = $tag_hash[$tag];
         }
+        else {
+          printf("The tag [%s] is undefined on MetroPublisher\n", $tag);
+        }
       }
 
       unset($listing_array['tags']);
@@ -71,8 +74,7 @@ class MetroPublisher {
 
     // Add tags for location
     foreach ($tag_uuids as $tag_uuid) {
-      $tagging_result = $this->setLocationTag($listing_array['uuid'], $tag_uuid);
-
+      $tagging_response = $this->setLocationTag($listing_array['uuid'], $tag_uuid);
     }
 
     return $ret;
