@@ -26,12 +26,8 @@ if ($argc < 2) {
 
 try {
   $MP = new MetroPublisher(API_KEY, API_SECRET);
-  
+
   $tag_cats = $MP->getAllTags();
-  print_r($tag_cats);
-
-
-  throw new Exception('abc');
   // Establish a new metropublisher connection.
 
   $csv_rows = CSVListings::importFromFile($argv[1]);
@@ -41,7 +37,11 @@ try {
     if (empty($csv_row['uuid'])) {
       throw new \Exception('All rows must have a UUID. Please update the csv using `php add-uuid-to-csv.php` and then run this script again.');
     }
-    $MP->putLocation($csv_row);
+    $put_response = $MP->putLocation($csv_row);
+
+    if (isset($put_response->error)) {
+      throw new Exception($csv_row['title'] . ': ' . $put_response->error_description);
+    }
   }
 } catch (Exception $e) {
   die($e->getMessage()."\n");

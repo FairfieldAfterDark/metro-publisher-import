@@ -37,10 +37,17 @@ class CSVListings {
         if ($row_size < 1 || $row_size == 1 && empty($row[0]) || strlen(implode('', $row)) === 0) {
           continue;
         }
+
+        // Foreach column, evaluate key/value.
         for ($i = 0; $i < sizeof($row); $i++) {
           $key = $keys[$i];
-          $value = $row[$i];
-          $row_hash[$key] = $value;
+          $value = str_replace('&#13;', '', $row[$i]);
+          if ($key == 'content') {
+            $row_hash[$key] = WPTextFormatting::wpautop($value);
+          }
+          else {
+            $row_hash[$key] = str_replace('&#13;', '', $value);
+          }
         }
 
         $rows[] = $row_hash;

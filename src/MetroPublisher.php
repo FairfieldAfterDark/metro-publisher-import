@@ -29,6 +29,21 @@ class MetroPublisher {
    * @param $listing_array
    */
   function putLocation($listing_array) {
+    // Retrieve tag uuids for listing
+    $tag_uuids = array();
+    if (isset($listing_array['tags'])) {
+      $tag_hash = $this->getAllTags();
+      $tags = explode(',', preg_replace('/\s+/', '', $listing_array['tags']));
+
+      foreach ($tags as $tag) {
+        if (isset($tag_hash[$tag])) {
+          $tag_uuids[] = $tag_hash[$tag];
+        }
+      }
+
+      unset($listing_array['tags']);
+    }
+
     // Generate a unique URL Name for this listing.
     static $url_names = array();
     $base_key_idx = 1;
@@ -52,7 +67,30 @@ class MetroPublisher {
     $json = json_encode((object) $listing_array);
     $content_type = 'application/json';
 
-    return $this->__curl($url, $request, $json, $content_type);
+    $ret = $this->__curl($url, $request, $json, $content_type);
+
+    // Add tags for location
+    foreach ($tag_uuids as $tag_uuid) {
+      $tagging_result = $this->setLocationTag($listing_array['uuid'], $tag_uuid);
+
+    }
+
+    return $ret;
+  }
+
+  /**
+   * Adds a tag to the location.
+   *
+   * @param $location_uuid
+   * @param $tag_uuid
+   */
+  public function setLocationTag($location_uuid, $tag_uuid) {
+    $url = sprintf("%s/tags/%s/describes/%s", $this->myURLBase, $tag_uuid, $location_uuid);
+    $request = 'PUT';
+    $data = '{}';
+    $content_type = 'application/json';
+
+    return $this->__curl($url, $request, $data, $content_type);
   }
 
   /**
@@ -185,8 +223,4 @@ class MetroPublisher {
       return json_decode($response);
     }
   }
-
-
-
-
 }
