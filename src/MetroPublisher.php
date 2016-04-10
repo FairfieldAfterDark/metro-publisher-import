@@ -51,9 +51,8 @@ class MetroPublisher {
     $request = 'PUT';
     $json = json_encode((object) $listing_array);
     $content_type = 'application/json';
-    $postman_token = '8babdb0d-d402-e11f-6fa5-54d5d03d3f8c';
 
-    return $this->__curl($url, $request, $json, $content_type, $postman_token);
+    return $this->__curl($url, $request, $json, $content_type);
   }
 
   /**
@@ -68,11 +67,59 @@ class MetroPublisher {
     $request = 'GET';
     $data = NULL;
     $content_type = 'application/json';
-    $postman_token = '52c156c7-ca46-25f3-f810-0150b49f16ae';
 
-    return $this->__curl($url, $request, $data, $content_type, $postman_token);
+    return $this->__curl($url, $request, $data, $content_type);
   }
 
+
+  /**
+   * Retrieves 1 page of tags (up to 100 tags) from MetroPublisher
+   *
+   * @return mixed
+   * @throws \Exception
+   */
+  public function getTags($page = 1) {
+    static $_cache = array();
+    if (isset($_cache[$page])) {
+      return $_cache[$page];
+    }
+    $url = sprintf("%s/tags?fields=uuid-urlname&rpp=100&page=%d&type=default&state=approved&order=title.asc", $this->myURLBase, $page);
+    $request = 'GET';
+    $data = NULL;
+    $content_type = 'application/json';
+
+    $results = $this->__curl($url, $request, $data, $content_type);
+
+    $tags = array();
+    foreach ($results->items as $tag) {
+      $tags[$tag[1]] = $tag[0];
+    }
+    $_cache[$page] = $tags;
+    return $tags;
+  }
+
+
+  /**
+   * Retrieves all tags from MetroPublisher
+   */
+  public function getAllTags() {
+    static $_cache = NULL;
+    if (isset($_cache)) {
+      return $_cache;
+    }
+    $tags = array();
+    for ($page = 1; TRUE; $page++) {
+      $page_tags = $this->getTags($page);
+      $ct = sizeof($page_tags);
+      if ($ct == 0) {
+        break;
+      }
+      $tags = array_merge($tags, $page_tags);
+    }
+
+    $_cache = $tags;
+    return $tags;
+  }
 
   /**
    * Sets an authorization token.
@@ -85,8 +132,7 @@ class MetroPublisher {
     $request = 'POST';
     $data = sprintf("grant_type=client_credentials&api_key=%s&api_secret=%s", $this->myApiKey, $this->myApiSecret);
     $content_type = 'application/x-www-form-urlencoded';
-    $postman_token = '5e4b41af-2d23-091c-9e73-89ebb091aa3f';
-    $response = $this->__curl($url, $request, $data, $content_type, $postman_token, FALSE);
+    $response = $this->__curl($url, $request, $data, $content_type, FALSE);
 
     $this->myAuthToken = $response;
     $this->myURLBase = $this->myAuthToken->items[0]->url;
@@ -100,7 +146,7 @@ class MetroPublisher {
    * @param string $custom_request
    * @param string $postman_token
    */
-  private function __curl($url, $custom_request = 'GET', $data = NULL, $content_type = '', $postman_token = '', $requires_token = TRUE) {
+  private function __curl($url, $custom_request = 'GET', $data = NULL, $content_type = '', $requires_token = TRUE) {
     $curl = curl_init();
 
     // Setup HTTP Header Arrays
@@ -111,9 +157,6 @@ class MetroPublisher {
     }
     if (!empty($content_type)) {
       $http_header_array[] = sprintf("content-type: %s", $content_type);
-    }
-    if (!empty($postman_token)) {
-      $http_header_array[] = sprintf("postman-token: %s", $postman_token);
     }
 
     // Initialize cURL options
@@ -142,4 +185,8 @@ class MetroPublisher {
       return json_decode($response);
     }
   }
+
+
+
+
 }

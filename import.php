@@ -25,8 +25,15 @@ if ($argc < 2) {
 }
 
 try {
-  // Establish a new metropublisher connection.
   $MP = new MetroPublisher(API_KEY, API_SECRET);
+  
+  $tag_cats = $MP->getAllTags();
+  print_r($tag_cats);
+
+
+  throw new Exception('abc');
+  // Establish a new metropublisher connection.
+
   $csv_rows = CSVListings::importFromFile($argv[1]);
 
   // Import each row
