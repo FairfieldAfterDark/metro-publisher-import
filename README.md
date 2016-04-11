@@ -99,9 +99,11 @@ $location = $MP->getLocation($uuid);
 ```
 
 ##### To Add/Update a Location on MetroPublisher
+
+Here is an example listing import.
 ```
 $listing_array = array(
-    'uuid' => 'XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX',
+    'uuid' => '12345678-1234-4321-9999-123456789012',
     'title' => 'The Alamo',
     'content' => 'Some Content Here',
     'description' => 'The Alamo Mission in San Antonio, commonly called the Alamo and originally known as Misión San Antonio de Valero, is part of the San Antonio Missions World Heritage Site in San Antonio, Texas, United States.',
@@ -140,3 +142,17 @@ $new_uuid = Uuid::uuid4();
 
 *Note: This doesn't guarantee a unique ID, but based on a the very low mathematical probability of a collision, it's a pretty safe bet. If you wish to guarantee uniqueness, that functionality shouldn't be too hard to write.*
 
+##### Exceptions
+
+It is highly recommended that you wrap your code in a try/catch statement, especially if you are having issues.
+
+For example:
+```
+try {
+  $MP = new MetroPublisher(API_KEY, API_SECRET);
+
+  // Additional code goes here.
+} catch (\WidgetsBurritos\MetroPublisherException $e) {
+  die($e->getMessage()."\n");
+}
+```
