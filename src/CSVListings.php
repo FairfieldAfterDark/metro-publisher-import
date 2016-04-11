@@ -1,6 +1,8 @@
 <?php
 namespace WidgetsBurritos;
 
+use WidgetsBurritos\CSVListingsException;
+
 /**
  * Class CSVListings
  * @package WidgetsBurritos
@@ -11,7 +13,7 @@ class CSVListings {
    *
    * @param $file
    * @return array
-   * @throws \Exception
+   * @throws \WidgetsBurritos\CSVListingsException
    */
   public static function importFromFile($file) {
     ini_set("auto_detect_line_endings", "1");
@@ -21,7 +23,7 @@ class CSVListings {
 
     // Ensure we can read the file
     if (($fh = @fopen($file, "r")) === FALSE) {
-      throw new \Exception("Could not read file");
+      throw new CSVListingsException("Could not read file");
     }
 
     // Foreach row add to hash array.
@@ -68,7 +70,7 @@ class CSVListings {
 
     // Attempt to open file for write.
     if (($fh = @fopen($file, "w")) === FALSE) {
-      throw new \Exception("Could not save file");
+      throw new CSVListingsException("Could not save file");
     }
     // Output header.
     fputcsv($fh, $header);

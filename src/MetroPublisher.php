@@ -1,7 +1,7 @@
 <?php
 namespace WidgetsBurritos;
 
-use WidgetsBurritos\WPTextFormatting;
+use WidgetsBurritos\MetroPublisherException;
 
 /**
  * Class MetroPublisher
@@ -21,6 +21,70 @@ class MetroPublisher {
     $this->myApiKey = $api_key;
     $this->myApiSecret = $api_secret;
     $this->__setAuthorizationToken();
+  }
+
+  /**
+   * Retrieves all tags from MetroPublisher
+   */
+  public function getAllTags() {
+    static $_cache = NULL;
+    if (isset($_cache)) {
+      return $_cache;
+    }
+    $tags = array();
+    for ($page = 1; TRUE; $page++) {
+      $page_tags = $this->getTagsByPage($page);
+      $ct = sizeof($page_tags);
+      if ($ct == 0) {
+        break;
+      }
+      $tags = array_merge($tags, $page_tags);
+    }
+
+    $_cache = $tags;
+    return $tags;
+  }
+
+  /**
+   * Retrieves a location by uuid.
+   *
+   * @param $uuid
+   * @return mixed
+   * @throws \WidgetsBurritos\MetroPublisherException
+   */
+  public function getLocation($uuid) {
+    $url = sprintf("%s/locations/%s", $this->myURLBase, $uuid);
+    $request = 'GET';
+    $data = NULL;
+    $content_type = 'application/json';
+
+    return $this->__curl($url, $request, $data, $content_type);
+  }
+
+  /**
+   * Retrieves 1 page of tags (up to 100 tags) from MetroPublisher
+   *
+   * @return mixed
+   * @throws \WidgetsBurritos\MetroPublisherException
+   */
+  public function getTagsByPage($page = 1) {
+    static $_cache = array();
+    if (isset($_cache[$page])) {
+      return $_cache[$page];
+    }
+    $url = sprintf("%s/tags?fields=uuid-urlname&rpp=100&page=%d&type=default&state=approved&order=title.asc", $this->myURLBase, $page);
+    $request = 'GET';
+    $data = NULL;
+    $content_type = 'application/json';
+
+    $results = $this->__curl($url, $request, $data, $content_type);
+
+    $tags = array();
+    foreach ($results->items as $tag) {
+      $tags[$tag[1]] = $tag[0];
+    }
+    $_cache[$page] = $tags;
+    return $tags;
   }
 
   /**
@@ -96,76 +160,10 @@ class MetroPublisher {
   }
 
   /**
-   * Retrieves a location by uuid.
-   *
-   * @param $uuid
-   * @return mixed
-   * @throws \Exception
-   */
-  public function getLocation($uuid) {
-    $url = sprintf("%s/locations/%s", $this->myURLBase, $uuid);
-    $request = 'GET';
-    $data = NULL;
-    $content_type = 'application/json';
-
-    return $this->__curl($url, $request, $data, $content_type);
-  }
-
-
-  /**
-   * Retrieves 1 page of tags (up to 100 tags) from MetroPublisher
-   *
-   * @return mixed
-   * @throws \Exception
-   */
-  public function getTags($page = 1) {
-    static $_cache = array();
-    if (isset($_cache[$page])) {
-      return $_cache[$page];
-    }
-    $url = sprintf("%s/tags?fields=uuid-urlname&rpp=100&page=%d&type=default&state=approved&order=title.asc", $this->myURLBase, $page);
-    $request = 'GET';
-    $data = NULL;
-    $content_type = 'application/json';
-
-    $results = $this->__curl($url, $request, $data, $content_type);
-
-    $tags = array();
-    foreach ($results->items as $tag) {
-      $tags[$tag[1]] = $tag[0];
-    }
-    $_cache[$page] = $tags;
-    return $tags;
-  }
-
-
-  /**
-   * Retrieves all tags from MetroPublisher
-   */
-  public function getAllTags() {
-    static $_cache = NULL;
-    if (isset($_cache)) {
-      return $_cache;
-    }
-    $tags = array();
-    for ($page = 1; TRUE; $page++) {
-      $page_tags = $this->getTags($page);
-      $ct = sizeof($page_tags);
-      if ($ct == 0) {
-        break;
-      }
-      $tags = array_merge($tags, $page_tags);
-    }
-
-    $_cache = $tags;
-    return $tags;
-  }
-
-  /**
    * Sets an authorization token.
    *
    * @return mixed
-   * @throws \WidgetsBurritos\Exception
+   * @throws \WidgetsBurritos\MetroPublisherException
    */
   private function __setAuthorizationToken() {
     $url = "https://go.metropublisher.com/oauth/token";
@@ -177,7 +175,6 @@ class MetroPublisher {
     $this->myAuthToken = $response;
     $this->myURLBase = $this->myAuthToken->items[0]->url;
   }
-
 
   /**
    * Runs a CURL request.
@@ -219,7 +216,7 @@ class MetroPublisher {
     curl_close($curl);
 
     if ($err) {
-      throw new \Exception("cURL Error:" . $err);
+      throw new MetroPublisherException("cURL Error:" . $err);
     }
     else {
       return json_decode($response);

@@ -43,6 +43,6 @@ try {
       throw new Exception($csv_row['title'] . ': ' . $put_response->error_description);
     }
   }
-} catch (Exception $e) {
+} catch (\WidgetsBurritos\MetroPublisherException $e) {
   die($e->getMessage()."\n");
 }
