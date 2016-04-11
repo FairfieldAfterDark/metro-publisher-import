@@ -67,12 +67,12 @@ class MetroPublisher {
    * @return mixed
    * @throws \WidgetsBurritos\MetroPublisherException
    */
-  public function getTagsByPage($page = 1) {
+  public function getTagsByPage($page = 1, $page_size = 100) {
     static $_cache = array();
     if (isset($_cache[$page])) {
       return $_cache[$page];
     }
-    $url = sprintf("%s/tags?fields=uuid-urlname&rpp=100&page=%d&type=default&state=approved&order=title.asc", $this->myURLBase, $page);
+    $url = sprintf("%s/tags?fields=uuid-urlname&rpp=%d&page=%d&type=default&state=approved&order=title.asc", $this->myURLBase, $page_size, $page);
     $request = 'GET';
     $data = NULL;
     $content_type = 'application/json';

@@ -65,4 +65,78 @@ destination files:
 php fix-uuid.php src.csv src.csv --force
 ```
 
+### Using the MetroPublisher PHP Class
+
+If you wish to just use the MetroPublisher PHP Class to build your own custom import script, you must first import the
+Library into your code:
+
+
+```
+require __DIR__ . '/vendor/autoload.php';
+
+use WidgetsBurritos\MetroPublisher;
+```
+
+Then create a new MetroPublisher class, and pass in your API key and API secret into the constructor:
+
+```
+$MP = new MetroPublisher(API_KEY, API_SECRET);
+```
+
+##### To Retrieve a List of Available Tags
+```
+$all_tags = $MP->getAllTags();
+```
+
+##### To Retrieve a Page of Tags
+```
+$page_tags = $MP->getTagsByPage($page_num, $page_size);
+```
+
+##### To Retrieve a Location by UUID
+```
+$location = $MP->getLocation($uuid);
+```
+
+##### To Add/Update a Location on MetroPublisher
+```
+$listing_array = array(
+    'uuid' => 'XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX',
+    'title' => 'The Alamo',
+    'content' => 'Some Content Here',
+    'description' => 'The Alamo Mission in San Antonio, commonly called the Alamo and originally known as Misión San Antonio de Valero, is part of the San Antonio Missions World Heritage Site in San Antonio, Texas, United States.',
+    'email' => 'Listing email address here',
+    'opening_hours' => 'Every day: 9am-5:30pm (Closed Christmas Eve and Day)',
+    'streetnumber' => 300,
+    'street' => 'Alamo Plaza',
+    'state' => 'TX',
+    'phone' => '555-555-5555',
+    'fax' => '555-555-5556',
+    'geoname_id' => '1234567',
+    'lat' => '29.4260',
+    'long' => '98.4861',
+    'website' => 'http://www.thealamo.org/',
+    'tags' => 'mission,tourist-attraction,downtown',
+);
+$MP->putLocation($listing_array);
+```
+
+##### To Add a Tag to a Location on MetroPublisher
+
+Assuming you have a UUID for a location and a tag, you can add a tag to a location in the following manner:
+```
+$MP->setLocationTag($location_uuid, $tag_uuid);
+```
+
+##### To generate a UUID
+
+In the event you need a new UUID, you can utilize the Ramsey UUID class.
+
+```
+use Ramsey\Uuid\Uuid;
+
+$new_uuid = Uuid::uuid4();
+```
+
+*Note: This doesn't guarantee a unique ID, but based on a the very low mathematical probability of a collision, it's a pretty safe bet. If you wish to guarantee uniqueness, that functionality shouldn't be too hard to write.*
 
