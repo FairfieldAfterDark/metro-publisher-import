@@ -6,14 +6,6 @@
 require __DIR__ . '/vendor/autoload.php';
 
 use WidgetsBurritos\CSVListings;
-use WidgetsBurritos\GeonameLookup;
-
-// Ensure settings exist and then include them.
-if (!file_exists('settings.php')) {
-  die('Copy default.settings.php to settings.php and update variables to get started');
-}
-require_once('settings.php');
-
 
 // Ensure user is on command line.
 if (php_sapi_name() !== 'cli') {
@@ -43,21 +35,14 @@ try {
   // Attempt to import listings from CSV file
   $csv_rows = CSVListings::importFromFile($before_file);
 
-  // Initialize our geoname lookup.
-  $lookup = new GeonameLookup(GEONAMES_USER);
-
   // If row is missing a UUID, add one.
   foreach ($csv_rows as &$csv_row) {
-    // Ignore rows that already have a geonameId.
-    if (!empty($csv_row['geoname_id'])) {
-      continue;
+    // If has combined address, but no individual tokenized addresses, split them.
+    if ((empty($csv_row['street']) || empty($csv['streetnumber'])) && !empty($csv_row['address_street_combined'])) {
+      $tokens = explode(' ', $csv_row['address_street_combined']);
+      $csv_row['streetnumber'] = array_shift($tokens);
+      $csv_row['street'] = implode(' ', $tokens);
     }
-    // Ignore rows missing 
-    if (empty($csv_row['lat']) || empty($csv_row['long'])) {
-      printf("Skipping *%s* due to missing latitude/longitude", $csv_row['title']);
-      continue;
-    }
-    $csv_row['geoname_id'] = $lookup->lookupGeonameId($csv_row['address_city'] . ', ' . $csv_row['address_state']);
   }
 
   // Exports listings file.

@@ -25,6 +25,8 @@ if ($argc < 2) {
 }
 
 try {
+  date_default_timezone_set('UTC');
+
   $MP = new MetroPublisher(API_KEY, API_SECRET);
 
   $tag_cats = $MP->getAllTags();
@@ -45,13 +47,18 @@ try {
       }
     }
 
-    // address_city and address_state aren't valid MetroPublisher columns, and were only used for our import purposes, so remove them.
+    // address_* aren't valid MetroPublisher columns, and were only used for our import purposes, so remove them.
     unset($csv_row['address_city']);
     unset($csv_row['address_state']);
+    unset($csv_row['address_street_combined']);
 
     // Populate the coords array based on existing latitude/longitude.
     if (!empty($csv_row['lat']) && !empty($csv_row['long'])) {
       $csv_row['coords'] = array($csv_row['lat'], $csv_row['long']);
+    }
+
+    if ($csv_row['is_listing'] && !isset($csv_row['listing_start'])) {
+      $csv_row['listing_start']=substr(date('c'), 0, -6);
     }
 
     // Upload the listing and exit/warn on failure.
