@@ -9,8 +9,6 @@ class GeonameLookup {
   private $myUserName;
   const baseURL = 'http://api.geonames.org/searchJSON';
 
-//http://api.geonames.org/findNearbyJSON?lat=41.253043&lng=-95.995167&username=demo
-
   public function __construct($username) {
     $this->myUserName = $username;
   }
