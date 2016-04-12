@@ -37,10 +37,27 @@ try {
     if (empty($csv_row['uuid'])) {
       throw new \Exception('All rows must have a UUID. Please update the csv using `php add-uuid-to-csv.php` and then run this script again.');
     }
-    $put_response = $MP->putLocation($csv_row);
 
+    // Remove any empty column data.
+    foreach ($csv_row as $field => $value) {
+      if (empty($value)) {
+        unset($csv_row[$field]);
+      }
+    }
+
+    // address_city and address_state aren't valid MetroPublisher columns, and were only used for our import purposes, so remove them.
+    unset($csv_row['address_city']);
+    unset($csv_row['address_state']);
+
+    // Populate the coords array based on existing latitude/longitude.
+    if (!empty($csv_row['lat']) && !empty($csv_row['long'])) {
+      $csv_row['coords'] = array($csv_row['lat'], $csv_row['long']);
+    }
+
+    // Upload the listing and exit/warn on failure.
+    $put_response = $MP->putLocation($csv_row);
     if (isset($put_response->error)) {
-      throw new Exception($csv_row['title'] . ': ' . $put_response->error_description);
+      throw new Exception($csv_row['title'] . ': ' . json_encode($put_response->error_info));
     }
   }
 } catch (\WidgetsBurritos\MetroPublisherException $e) {

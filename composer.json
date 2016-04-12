@@ -2,7 +2,8 @@
   "name": "widgetsburritos/metro-publisher-import",
   "description": "Imports listings from CSV file into MetroPublisher.",
   "require": {
-    "ramsey/uuid": "^3.3"
+    "ramsey/uuid": "^3.3",
+    "willdurand/geocoder": "^3.3"
   },
   "authors": [
     {

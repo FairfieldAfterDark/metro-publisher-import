@@ -126,7 +126,9 @@ class MetroPublisher {
     $listing_array['urlname'] = $url_key;
 
     // Wrap content with <p> tags to meet Metro Publisher's content requirements.
-    $listing_array['content'] = WPTextFormatting::wpautop($listing_array['content']);
+    if (isset($listing_array['content'])) {
+      $listing_array['content'] = WPTextFormatting::wpautop($listing_array['content']);
+    }
 
     // Send request to Metro Publisher
     $url = sprintf("%s/locations/%s", $this->myURLBase, $listing_array['uuid']);

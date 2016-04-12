@@ -4,4 +4,5 @@
 
 define('API_KEY', '');
 define('API_SECRET', '');
+define('GEONAMES_USER', 'demo');
 
