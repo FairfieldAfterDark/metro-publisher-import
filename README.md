@@ -2,6 +2,8 @@
 
 A simple PHP command-line script to import a CSV file of business locations directly into Metro Publisher.
 
+[View the Sample CSV import file](https://github.com/WidgetsBurritos/metro-publisher-import/blob/master/sample.csv)
+
 Note: System has only been used and tested on Mac OS X. If you run any other operating system,
 you may need to adapt your instructions accordingly.
 
@@ -64,6 +66,43 @@ destination files:
 ```
 php fix-uuid.php src.csv src.csv --force
 ```
+
+### Populating Empty Latitude/Longitude Fields
+If any rows in your CSV are missing latitude/longitude coordinates you can import them in this manner:
+```
+php gen-lat-long.php src.csv dest.csv
+```
+
+[Same rules as the UUID process apply if the dest.csv file already exists.](#populating-empty-uuid-fields)
+
+Note: This uses Google's Geocoder service, which has rate limits. You may have to run this script multiple times over
+multiple days to geocode every locations, if you have a large amount of locations in your CSV file.
+
+### Populating Geoname IDs
+
+You need to have a geonames.org account before you populate geoname ids in your CSV file.
+
+1. [Register an account with geonames.org](http://www.geonames.org/login)
+2. Set your geoname user name in your settings.php file.
+3. Run the following script to update your geoname id's:
+  ```
+php gen-geonames.php src.csv dest.csv
+```
+
+[Same rules as the UUID process apply if the dest.csv file already exists.](#populating-empty-uuid-fields)
+
+Note: This uses Geoname's ID look up service, which has rate limits. You may have to run this script multiple times over
+multiple days to find the geoname id for every location, if you have a large number of locations in your CSV file.
+
+### Splitting Addresses
+
+If your source data has street numbers and names combined, you can split them into separate fields like this:
+
+```
+php split-address.php src.csv dest.csv
+```
+
+[Same rules as the UUID process apply if the dest.csv file already exists.](#populating-empty-uuid-fields)
 
 ### Using the MetroPublisher PHP Class
 
