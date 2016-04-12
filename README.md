@@ -42,6 +42,8 @@ If you wish to import data directly from a CSV file into Metro Publisher you can
 php import.php import-file.csv
 ```
 
+***WARNING:** Every time you run this script, it will **replace** any locations in MetroPublisher that have matching UUIDs, so use cautiously.*
+
 ### Populating empty UUID fields
 
 If any rows in your CSV file are missing a UUID (i.e. a Universally Unique Identifier) you can add one using the
@@ -104,7 +106,9 @@ php split-address.php src.csv dest.csv
 
 [Same rules as the UUID process apply if the dest.csv file already exists.](#populating-empty-uuid-fields)
 
-### Using the MetroPublisher PHP Class
+---
+
+## Using the MetroPublisher PHP Class
 
 If you wish to just use the MetroPublisher PHP Class to build your own custom import script, you must first import the
 Library into your code:
