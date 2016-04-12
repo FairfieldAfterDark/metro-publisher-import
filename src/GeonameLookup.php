@@ -5,8 +5,6 @@
 
 namespace WidgetsBurritos;
 
-use voku\helper\HtmlDomParser;
-
 class GeonameLookup {
   private $myUserName;
   const baseURL = 'http://api.geonames.org/searchJSON';
