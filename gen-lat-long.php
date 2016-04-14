@@ -41,10 +41,15 @@ try {
   // If row is missing a UUID, add one.
   foreach ($csv_rows as &$csv_row) {
     if (empty($csv_row['lat']) || empty($csv_row['long'])) {
-      $result = $geocoder->geocode($csv_row['streetnumber'] . ' ' .$csv_row['street'] . ', ' . $csv_row['pcode']);
-      $csv_row['lat'] = $result->first()->getLatitude();
-      $csv_row['long'] = $result->first()->getLongitude();
-      sleep(1); // sleeping 1 second between each geocode to reduce overflow limits.
+      $address = $csv_row['streetnumber'] . ' ' .$csv_row['street'] . ', ' . $csv_row['pcode'];
+      // including spaces and the comma, the address should always be more than 3 characters in length.
+      if (strlen($address) > 3) {
+        $result = $geocoder->geocode($address);
+        $csv_row['lat'] = $result->first()->getLatitude();
+        $csv_row['long'] = $result->first()->getLongitude();
+        CSVListings::exportToFile($csv_rows, $after_file);
+        sleep(1); // sleeping 1 second between each geocode to reduce overflow limits.
+      }
     }
   }
 
