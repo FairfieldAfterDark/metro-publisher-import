@@ -45,7 +45,7 @@ class CSVListings {
           $key = $keys[$i];
           if ($key == 'content') {
             $value = self::__sanitize($row[$i], TRUE);
-            $row_hash[$key] = trim(WPTextFormatting::wpautop($value));
+            $row_hash[$key] = str_replace('<br />', '</p><p>', trim(WPTextFormatting::wpautop($value)));
           }
           else {
             $row_hash[$key] = self::__sanitize($row[$i]);
