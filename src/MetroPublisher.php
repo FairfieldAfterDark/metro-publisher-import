@@ -116,6 +116,7 @@ class MetroPublisher {
     $base_key_idx = 1;
     do {
       $url_key_base = preg_replace('/\s+/', '-', strtolower($listing_array['title']));
+      $url_key_base = preg_replace('/[^a-z0-9\-]/', '-', $url_key_base);
       $url_key = $url_key_base;
       if ($base_key_idx > 1) {
         $url_key .= '_' . $base_key_idx;
