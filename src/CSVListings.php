@@ -43,12 +43,13 @@ class CSVListings {
         // Foreach column, evaluate key/value.
         for ($i = 0; $i < sizeof($row); $i++) {
           $key = $keys[$i];
-          $value = self::__sanitize(str_replace('&#13;', '', $row[$i]));
+          $value = self::__sanitize($row[$i]);
           if ($key == 'content') {
-            $row_hash[$key] = WPTextFormatting::wpautop($value);
+
+            $row_hash[$key] = trim(WPTextFormatting::wpautop($value));
           }
           else {
-            $row_hash[$key] = str_replace('&#13;', '', $value);
+            $row_hash[$key] = $value;
           }
         }
 
@@ -92,6 +93,9 @@ class CSVListings {
    * @return mixed
    */
   private static function __sanitize($string) {
-    return preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $string);
+    $string = str_replace('&#13;', '', $string);
+    $string = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $string);
+    $string = str_replace('&', '&amp;', $string);
+    return $string;
   }
 }
