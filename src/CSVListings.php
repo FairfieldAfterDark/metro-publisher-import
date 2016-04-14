@@ -43,7 +43,7 @@ class CSVListings {
         // Foreach column, evaluate key/value.
         for ($i = 0; $i < sizeof($row); $i++) {
           $key = $keys[$i];
-          $value = str_replace('&#13;', '', $row[$i]);
+          $value = self::__sanitize(str_replace('&#13;', '', $row[$i]));
           if ($key == 'content') {
             $row_hash[$key] = WPTextFormatting::wpautop($value);
           }
@@ -82,5 +82,16 @@ class CSVListings {
 
     // Close file.
     fclose($fh);
+  }
+
+
+  /**
+   * Strips any special/out-of-range characters off of the string.
+   *
+   * @param $string
+   * @return mixed
+   */
+  private static function __sanitize($string) {
+    return preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $string);
   }
 }
