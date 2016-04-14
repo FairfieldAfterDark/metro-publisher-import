@@ -54,7 +54,7 @@ try {
     }
     // Ignore rows missing 
     if (empty($csv_row['lat']) || empty($csv_row['long'])) {
-      printf("Skipping *%s* due to missing latitude/longitude", $csv_row['title']);
+      printf("Skipping *%s* due to missing latitude/longitude\n", $csv_row['title']);
       continue;
     }
     $csv_row['geoname_id'] = $lookup->lookupGeonameId($csv_row['address_city'] . ', ' . $csv_row['address_state']);
