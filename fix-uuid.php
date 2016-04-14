@@ -39,11 +39,11 @@ try {
   foreach ($csv_rows as &$csv_row) {
     if (empty($csv_row['uuid'])) {
       $csv_row['uuid'] = Uuid::uuid4();
+
+      // Exports listings file.
+      CSVListings::exportToFile($csv_rows, $after_file);
     }
   }
-
-  // Exports listings file.
-  CSVListings::exportToFile($csv_rows, $after_file);
 } catch (\WidgetsBurritos\CSVListingsException $e) {
   die($e->getMessage()."\n");
 }

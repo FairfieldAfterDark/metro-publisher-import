@@ -52,9 +52,7 @@ try {
       }
     }
   }
-
-  // Exports listings file.
-  CSVListings::exportToFile($csv_rows, $after_file);
+  
 } catch (\WidgetsBurritos\CSVListingsException $e) {
   die($e->getMessage()."\n");
 }

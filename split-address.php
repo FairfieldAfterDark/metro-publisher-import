@@ -42,11 +42,12 @@ try {
       $tokens = explode(' ', $csv_row['address_street_combined']);
       $csv_row['streetnumber'] = array_shift($tokens);
       $csv_row['street'] = implode(' ', $tokens);
+      
+      // Exports listings file.
+      CSVListings::exportToFile($csv_rows, $after_file);
     }
   }
 
-  // Exports listings file.
-  CSVListings::exportToFile($csv_rows, $after_file);
 } catch (\WidgetsBurritos\CSVListingsException $e) {
   die($e->getMessage() . "\n");
 }

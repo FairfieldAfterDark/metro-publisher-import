@@ -58,10 +58,10 @@ try {
       continue;
     }
     $csv_row['geoname_id'] = $lookup->lookupGeonameId($csv_row['address_city'] . ', ' . $csv_row['address_state']);
+    // Exports listings file.
+    CSVListings::exportToFile($csv_rows, $after_file);
   }
 
-  // Exports listings file.
-  CSVListings::exportToFile($csv_rows, $after_file);
 } catch (\WidgetsBurritos\CSVListingsException $e) {
   die($e->getMessage() . "\n");
 }
