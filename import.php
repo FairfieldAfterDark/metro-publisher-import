@@ -57,7 +57,7 @@ try {
       $csv_row['coords'] = array($csv_row['lat'], $csv_row['long']);
     }
 
-    if ($csv_row['is_listing'] && !isset($csv_row['listing_start'])) {
+    if (isset($csv_row['is_listing']) && $csv_row['is_listing'] && !isset($csv_row['listing_start'])) {
       $csv_row['listing_start']=substr(date('c'), 0, -6);
     }
 
