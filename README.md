@@ -2,9 +2,6 @@
 
 A simple PHP command-line script to import a CSV file of business locations directly into Metro Publisher.
 
-[View the Sample CSV import file](https://github.com/WidgetsBurritos/metro-publisher-import/blob/master/sample.csv)
-
-
 ##### Disclaimers
 - This project has only been used and tested on Mac OS X 10.11.4 (El Capitan). If you run any other operating system, you may need to adapt
 your instructions accordingly.
@@ -32,7 +29,7 @@ complete PHP MetroPublisher library, let me know and I can add you as a collabor
   cd metro-publisher-import
   ```
   
-2. Next install and composer to download necessary dependencies:
+2. Next install and run composer to download necessary dependencies:
   ```
   curl -sS https://getcomposer.org/installer | php
   php composer.phar install
@@ -47,6 +44,22 @@ complete PHP MetroPublisher library, let me know and I can add you as a collabor
 
 ---
 
+### CSV File Format
+
+The CSV file format is very much tied to the [Location fields used in the Metro Publisher API](https://api.metropublisher.com/resources/location.html#resource-put-location-parameters).
+
+Generally speaking,you should try to match those columns as much as possible.  That said, there are a few extra columns,
+in addition to those, that you will need to add to your CSV file.
+
+1. `address_city` -- Used by `gen_geonames.php` to convert a city/state into a Geoname ID
+2. `address_state` -- Used by `gen_geonames.php` to convert a city/state into a Geoname ID
+3. `address_street_combined` -- Used by `split-address.php` to convert a combined street address, like `123 Main St.`
+into two separate columns `streetnumber` = `123` and `street` = `Main St.`
+
+**[View a Sample CSV import file](https://github.com/WidgetsBurritos/metro-publisher-import/blob/master/sample.csv)**
+
+---
+
 ### Importing Listings
 
 If you wish to import data directly from a CSV file into Metro Publisher you can do so using the following command:
@@ -54,6 +67,8 @@ If you wish to import data directly from a CSV file into Metro Publisher you can
 ```
 php import.php import-file.csv
 ```
+
+This process assumes your CSV contains proper fields, including: UUIDs, Geonames, Latitude/Longitude. If you don't, read further down this page on how to generate that.
 
 ##### Replacement Warning:
 Every time you run this script, it will **replace** any locations in MetroPublisher that have matching UUIDs, so use cautiously.
@@ -146,6 +161,37 @@ php split-address.php src.csv dest.csv
 ```
 
 [Same rules as the UUID process apply if the dest.csv file already exists.](#populating-empty-uuid-fields)
+
+---
+
+### Recommended Sequence of Events:
+
+The features were explained above by order of importance. That said, it's not a recommended order
+to run the commands.
+
+While your situation may be slightly different, here is a recommended sequence of events, assuming your original CSV is named `import.csv`:
+
+1. [Generate UUIDs](#populating-empty-uuid-fields) (if necessary)
+```
+php gen-uuids.php import.csv import-step1.csv --force
+```
+2. [Split Addresses](#splitting-addresses) (if necessary)
+```
+php gen-split-address.php import-step1.csv import-step2.csv --force
+```
+3. [Generate Latitude/Longitude](#populating-empty-latitudelongitude-fields) (if necessary)
+```
+php gen-lat-long.php import-step2.csv import-step3.csv --force
+```
+4. [Generate Geoname IDs](#populating-geoname-ids) (if necessary)
+```
+php gen-geonames.php import-step3.csv import-step4.csv --force
+```
+5. [Import your CSV file](#importing-listings)
+```
+php import.php import-step4.csv
+```
+
 
 ---
 
