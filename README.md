@@ -146,9 +146,10 @@ You need to have a geonames.org account before you populate geoname ids in your 
 1. [Register an account with geonames.org](http://www.geonames.org/login)
 2. Set your geoname user name in your settings.php file.
 3. Run the following script to update your geoname id's:
-  ```
+```
 php gen-geonames.php src.csv dest.csv
 ```
+
 *- Before running, please see [Recommended Sequence of Events](https://github.com/WidgetsBurritos/metro-publisher-import#recommended-sequence-of-events)*
 
 [Same rules as the UUID process apply if the dest.csv file already exists.](#populating-empty-uuid-fields)
