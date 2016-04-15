@@ -67,6 +67,7 @@ If you wish to import data directly from a CSV file into Metro Publisher you can
 ```
 php import.php import-file.csv
 ```
+*- Before running, please see [Recommended Sequence of Events](https://github.com/WidgetsBurritos/metro-publisher-import#recommended-sequence-of-events)*
 
 This process assumes your CSV contains proper fields, including: UUIDs, Geonames, Latitude/Longitude. If you don't, read further down this page on how to generate that.
 
@@ -105,6 +106,7 @@ For example, if you wish to take the contents of `src.csv`, add a UUID to each r
 ```
 php gen-uuid.php src.csv dest.csv
 ```
+*- Before running, please see [Recommended Sequence of Events](https://github.com/WidgetsBurritos/metro-publisher-import#recommended-sequence-of-events)*
 
 Note: In order to protect existing files from accidental overwrite, if dest.csv exists, you must use the `--force` flag
 at the tail end of your command:
@@ -126,6 +128,7 @@ If any rows in your CSV are missing latitude/longitude coordinates you can impor
 ```
 php gen-lat-long.php src.csv dest.csv
 ```
+*- Before running, please see [Recommended Sequence of Events](https://github.com/WidgetsBurritos/metro-publisher-import#recommended-sequence-of-events)*
 
 [Same rules as the UUID process apply if the dest.csv file already exists.](#populating-empty-uuid-fields)
 
@@ -144,6 +147,7 @@ You need to have a geonames.org account before you populate geoname ids in your 
   ```
 php gen-geonames.php src.csv dest.csv
 ```
+*- Before running, please see [Recommended Sequence of Events](https://github.com/WidgetsBurritos/metro-publisher-import#recommended-sequence-of-events)*
 
 [Same rules as the UUID process apply if the dest.csv file already exists.](#populating-empty-uuid-fields)
 
@@ -159,6 +163,7 @@ If your source data has street numbers and names combined, you can split them in
 ```
 php split-address.php src.csv dest.csv
 ```
+*- Before running, please see [Recommended Sequence of Events](https://github.com/WidgetsBurritos/metro-publisher-import#recommended-sequence-of-events)*
 
 [Same rules as the UUID process apply if the dest.csv file already exists.](#populating-empty-uuid-fields)
 
