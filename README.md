@@ -4,8 +4,20 @@ A simple PHP command-line script to import a CSV file of business locations dire
 
 [View the Sample CSV import file](https://github.com/WidgetsBurritos/metro-publisher-import/blob/master/sample.csv)
 
-Note: System has only been used and tested on Mac OS X. If you run any other operating system,
-you may need to adapt your instructions accordingly.
+
+##### Disclaimers
+- This project has only been used and tested on Mac OS X 10.11.4 (El Capitan). If you run any other operating system, you may need to adapt
+your instructions accordingly.
+- This project assumes you have PHP 5.3.2+ installed on your system (although 5.5 is recommended). If you don't see [PHP: General Installation Considerations](http://php.net/manual/en/install.general.php) to figure out how to best get it installed on your system.
+- This system was built to do a one-time import on a localized environment. I am sharing this code in hopes that it may
+help someone else import locations into MetroPublisher in the future. It has not been tested or designed to run in any
+sort of automated or production environment so use at your own risk.
+- Since this script was built for one-time use, I won't be actively updating this or even guaranteeing that it will work
+if any of the various API systems change. Feel free to fork and modify this project and adapt it however
+you see fit.
+- If anyone is interested in actively updating and maintaining this project and would like to build a more
+complete PHP MetroPublisher library, let me know and I can add you as a collaborator on the project.
+
 
 ## How to Use It
 
@@ -31,8 +43,9 @@ you may need to adapt your instructions accordingly.
   cp default.settings.php settings.php
   ```
   
-4. Open `settings.php` in a text editor, and add your Metro Publisher api key and secret.
+4. Open `settings.php` in a text editor, and update your Metro Publisher api key and secret, and Geonames username.
 
+---
 
 ### Importing Listings
 
@@ -42,32 +55,56 @@ If you wish to import data directly from a CSV file into Metro Publisher you can
 php import.php import-file.csv
 ```
 
-***WARNING:** Every time you run this script, it will **replace** any locations in MetroPublisher that have matching UUIDs, so use cautiously.*
+##### Replacement Warning:
+Every time you run this script, it will **replace** any locations in MetroPublisher that have matching UUIDs, so use cautiously.
+
+##### Tags:
+This import script does not create tags, but assumes tags already exist in Metro Publisher. This was intentional to avoid cluttering our system with a bunch of incorrect tags. Instead, the import script alerts you if you use an invalid tag, so you can go back and correct it and reimport the listing.
+
+All tags should placed in the `tags` column of your CSV using `URLName` for that listing.
+
+So for example, if you have a listing that should be marked with the `Downtown` and `Tourist Attraction` tags, make sure those tags exist in Metro Publisher. Then find their respective URLNames. In this case `downtown` and `tourist-attraction`.
+
+The value for the last column should be `downtown,tourist-attraction`.
+
+*Note: If you're editing the CSV with a text editor (instead of spreadsheet software like Excel, Numbers, etc...), then make sure the entire string is surrounded with quotation marks, to avoid splitting the field.*
+
+##### Unicode Characters:
+
+Many of the APIs used here have issues with Unicode characters outside of the accepted ASCII character range. As a result, whenever importing a CSV, these special characters get stripped out. If you must have these characters, you will need to add them back manually after import.
+
+##### Memory Issues:
+
+Since this script is importing all rows of a CSV file into active memory, really large CSV files may cause memory issues.  If you run into this problem, is recommended you split your CSV files into to multiple files and try importing in chunks instead of all at once.
+
+---
 
 ### Populating empty UUID fields
 
 If any rows in your CSV file are missing a UUID (i.e. a Universally Unique Identifier) you can add one using the
-`fix-uuid.php` script.
+`gen-uuid.php` script.
 
 For example, if you wish to take the contents of `src.csv`, add a UUID to each row, and then save the results to
 `dest.csv` you may do so using the following command:
 
 ```
-php fix-uuid.php src.csv dest.csv
+php gen-uuid.php src.csv dest.csv
 ```
 
 Note: In order to protect existing files from accidental overwrite, if dest.csv exists, you must use the `--force` flag
 at the tail end of your command:
 
 ```
-php fix-uuid.php src.csv dest.csv --force
+php gen-uuid.php src.csv dest.csv --force
 ```
 
 Additionally if you want to update the same file you are importing from, just specify that file as both the source and
 destination files:
 ```
-php fix-uuid.php src.csv src.csv --force
+php gen-uuid.php src.csv src.csv --force
 ```
+
+---
 
 ### Populating Empty Latitude/Longitude Fields
 If any rows in your CSV are missing latitude/longitude coordinates you can import them in this manner:
@@ -79,6 +116,8 @@ php gen-lat-long.php src.csv dest.csv
 
 Note: This uses Google's Geocoder service, which has rate limits. You may have to run this script multiple times over
 multiple days to geocode every locations, if you have a large amount of locations in your CSV file.
+
+---
 
 ### Populating Geoname IDs
 
@@ -95,6 +134,8 @@ php gen-geonames.php src.csv dest.csv
 
 Note: This uses Geoname's ID look up service, which has rate limits. You may have to run this script multiple times over
 multiple days to find the geoname id for every location, if you have a large number of locations in your CSV file.
+
+---
 
 ### Splitting Addresses
 
@@ -199,3 +240,40 @@ try {
   die($e->getMessage()."\n");
 }
 ```
+
+---
+
+## Using the CSVListings PHP Class
+
+If you just want to do simple importing/exporting on your CSV files, you can use the CSVListings class for this. This class is MetroPublisher-specific, and hasn't been thoroughly tested in other contexts.
+
+#### Import the class:
+```
+require __DIR__ . '/vendor/autoload.php';
+
+use WidgetsBurritos\CSVListings;
+```
+
+#### Importing Listings from a CSV File
+
+To import all rows into an array that you can then iterate through, do the following:
+
+```
+$file_name = 'import.csv';
+$csv_rows = CSVListings::importFromFile($file_name);
+```
+
+##### Header Row
+This class assumes you have one header row in your csv file. The header row is used to key each row as an associative array, so uniqueness is important.
+
+#### Exporting Listings to a CSV File
+
+To export all rows into a CSV file:
+```
+$file_name = 'export.csv';
+CSVListings::exportToFile($csv_rows, $file_name);
+```
+
+##### Header Row
+Much like the import, the export will generate a header row. This gets determined by the first row in `$csv_rows`. The script will output all array_keys as the header.
+

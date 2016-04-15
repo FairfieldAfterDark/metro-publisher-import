@@ -92,8 +92,12 @@ class CSVListings {
    * @return mixed
    */
   private static function __sanitize($string, $switch_ampersands = FALSE) {
+    // Some carriage returns in some contexts get replaced by &#13; which we obviously don't want in the code.
     $string = str_replace('&#13;', '', $string);
+    // Strip out any characters outside of our accepted ASCII range.
     $string = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $string);
+
+    // In HTML fields (e.g. the content column), ampersands need to be replaced otherwise imports may fail.
     if ($switch_ampersands) {
       $string = str_replace('&', '&amp;', $string);
     }
