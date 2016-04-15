@@ -26,8 +26,8 @@ complete PHP MetroPublisher library, let me know and I can add you as a collabor
 1. Clone this repository onto your system using your system terminal:
 
   ```
-  mkdir -p ~/github/ 
-  cd ~/github/
+  mkdir -p ~/Documents/github/
+  cd ~/Documents/github/
   git clone https://github.com/WidgetsBurritos/metro-publisher-import.git
   cd metro-publisher-import
   ```
