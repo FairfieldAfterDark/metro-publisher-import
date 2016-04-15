@@ -8,12 +8,12 @@ A simple PHP command-line script to import a CSV file of business locations dire
 ##### Disclaimers
 - This project has only been used and tested on Mac OS X 10.11.4 (El Capitan). If you run any other operating system, you may need to adapt
 your instructions accordingly.
-- This project assumes you have PHP 5.3.2+ installed on your system (although 5.5 is recommended). If you don't see [PHP: General Installation Considerations](http://php.net/manual/en/install.general.php) to figure out how to best get it installed on your system.
-- This system was built to do a one-time import on a localized environment. I am sharing this code in hopes that it may
+- This project assumes you have PHP 5.3.2+ installed on your system (although 5.5 is recommended). If you don't have it installed, see [PHP: General Installation Considerations](http://php.net/manual/en/install.general.php) to figure out how to best get it installed on your system.
+- This project was built to do a one-time import on a localized environment. I am sharing this code in hopes that it may
 help someone else import locations into MetroPublisher in the future. It has not been tested or designed to run in any
 sort of automated or production environment so use at your own risk.
-- Since this script was built for one-time use, I won't be actively updating this or even guaranteeing that it will work
-if any of the various API systems change. Feel free to fork and modify this project and adapt it however
+- Since this project was built for one-time use, I won't be actively updating this or even guaranteeing that it will work
+if any of the various API systems change in the future. Feel free to fork and modify this project and adapt it however
 you see fit.
 - If anyone is interested in actively updating and maintaining this project and would like to build a more
 complete PHP MetroPublisher library, let me know and I can add you as a collaborator on the project.
@@ -23,7 +23,7 @@ complete PHP MetroPublisher library, let me know and I can add you as a collabor
 
 ### Installing for the first time.
 
-1. Clone this respository onto your system using your system terminal:
+1. Clone this repository onto your system using your system terminal:
 
   ```
   mkdir -p ~/github/ 
