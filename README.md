@@ -28,6 +28,8 @@ complete PHP MetroPublisher library, let me know and I can add you as a collabor
   git clone https://github.com/WidgetsBurritos/metro-publisher-import.git
   cd metro-publisher-import
   ```
+
+  [Alternatively you can download the latest release.](https://github.com/WidgetsBurritos/metro-publisher-import/releases)
   
 2. Next install and run composer to download necessary dependencies:
   ```
