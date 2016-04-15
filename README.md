@@ -42,6 +42,8 @@ complete PHP MetroPublisher library, let me know and I can add you as a collabor
   
 4. Open `settings.php` in a text editor, and update your Metro Publisher api key and secret, and Geonames username.
 
+   *You will need to get these values from MetroPublisher and Geonames.org, if you don't have them already.*
+
 ---
 
 ### CSV File Format
